@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using TodoSample.Data;
 using TodoSample.Helpers;
 using Microsoft.AspNetCore.ResponseCompression;
+using TodoSample;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<BrotliCompressionProvider>();
     options.Providers.Add<GzipCompressionProvider>();
 });
+builder.Services.AddHealthChecks()
+    .AddCheck<HealthCheck>("health");
 
 var app = builder.Build();
 
@@ -49,4 +52,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
+app.MapHealthChecks("/health");
 app.Run();
