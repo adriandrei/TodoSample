@@ -8,6 +8,7 @@ using TodoSample.Data;
 using TodoSample.Helpers;
 using Microsoft.AspNetCore.ResponseCompression;
 using TodoSample;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,4 +50,7 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 app.MapHealthChecks("/health");
+var option = new RewriteOptions();
+option.AddRedirect("^$", "swagger");
+app.UseRewriter(option);
 app.Run();
