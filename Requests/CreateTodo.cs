@@ -7,8 +7,14 @@ namespace TodoSample.Requests;
 
 public record CreateTodoRequest :  IRequest
 {
+    public CreateTodoRequest(string title, string? description)
+    {
+        this.Title = title;
+        this.Description = description;
+    }
+
     public string Title { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }
 
 public sealed class CreateTodoValidator : AbstractValidator<CreateTodoRequest>
@@ -16,7 +22,6 @@ public sealed class CreateTodoValidator : AbstractValidator<CreateTodoRequest>
     public CreateTodoValidator()
     {
         RuleFor(t => t.Title).NotNull().NotEmpty();
-        RuleFor(t => t.Description).NotNull().NotEmpty();
     }
 }
 

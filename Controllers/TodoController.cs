@@ -55,12 +55,7 @@ namespace TodoSample.Controllers
         {
             var result = await mediator.Send(new ListTodoRequest(key));
 
-            return Ok(result.Select(t => new TodoListDto
-            {
-                Id = t.Id,
-                Title = t.Title,
-                Updated = t.Updated
-            }));
+            return Ok(result.Select(t => new TodoListDto(t)));
         }
 
         [HttpDelete]
@@ -83,8 +78,19 @@ namespace TodoSample.Controllers
         [ProducesResponseType(typeof(ExceptionResponse), 500)]
         public async Task<IActionResult> Update(string id, [FromBody]UpdateTodoDboRequest request)
         {
-            await mediator.Send(new UpdateTodoRequest(id) { Title = request.Title, Description = request.Description });
+            await mediator.Send(new UpdateTodoRequest(id, request.Title) { Description = request.Description, DueBy = request.DueBy });
 
+            return Accepted();
+        }
+
+        [HttpPost]
+        [Route("complete/{id}")]
+        [ProducesResponseType(202)]
+        [ProducesResponseType(typeof(ExceptionResponse), 400)]
+        [ProducesResponseType(typeof(ExceptionResponse), 500)]
+        public async Task<IActionResult> Complete(string id)
+        {
+            await this.mediator.Send(new CompleteTodoRequest(id));
             return Accepted();
         }
     }

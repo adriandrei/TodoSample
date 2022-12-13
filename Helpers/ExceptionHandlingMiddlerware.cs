@@ -7,9 +7,9 @@ internal record class ExceptionResponse
 {
     public static ExceptionResponse From(int status) => new ExceptionResponse { Status = status };
 
-    public string Title { get; set; }
+    public string? Title { get; set; }
     public int Status { get; set; }
-    public IEnumerable<object> Errors { get; set; }
+    public IEnumerable<object>? Errors { get; set; }
     public Guid TraceId { get; set; }
 }
 internal sealed class ExceptionHandlingMiddleware : IMiddleware

@@ -1,29 +1,21 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using TodoSample.Data;
+using TodoSample.Helpers;
 using TodoSample.Models;
 
 namespace TodoSample.Requests;
 
-public class DeleteTodoRequest : IRequest
+public class DeleteTodoRequest : ExistingTodoRequest
 {
-	public DeleteTodoRequest(string id)
-	{
-		this.Id = id;
-	}
-
-    public string Id { get; set; }
+    public DeleteTodoRequest(string id) : base(id) { }
 }
 
-public sealed class DeleteTodoValidator : AbstractValidator<DeleteTodoRequest>
+public sealed class DeleteTodoValidator : ExistingTodoValidator<DeleteTodoRequest>
 {
-    public DeleteTodoValidator()
-    {
-        RuleFor(t => t.Id).NotEmpty().NotNull();
-    }
+    public DeleteTodoValidator(IRepository<Todo> repo) : base(repo) { }
 }
 
-public class DeleteTodoHandler : IRequestHandler<DeleteTodoRequest>
+public class DeleteTodoHandler : IRequestHandler<DeleteTodoRequest, Todo>
 {
     private readonly IRepository<Todo> repository;
 
@@ -32,15 +24,10 @@ public class DeleteTodoHandler : IRequestHandler<DeleteTodoRequest>
         this.repository = repository;
     }
 
-    public Task<Unit> Handle(DeleteTodoRequest request, CancellationToken cancellationToken)
+    public Task<Todo> Handle(DeleteTodoRequest request, CancellationToken cancellationToken)
     {
         var entity = repository.GetById(request.Id);
-
-        if (entity != null)
-        {
-            repository.Delete(entity);
-        }
-
-        return Unit.Task;
+        repository.Delete(entity);
+        return Task.FromResult(entity);
     }
 }

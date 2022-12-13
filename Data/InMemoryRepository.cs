@@ -9,7 +9,7 @@ public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
 
     public void Create(T entity)
     {
-        if (_database.ContainsKey(entity.Id))
+        if (Exists(entity.Id))
             throw new Exception($"Entity with Id {entity.Id} already exists");
 
         _database.TryAdd(entity.Id, entity);
@@ -17,10 +17,15 @@ public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
 
     public void Delete(T entity)
     {
-        if (!_database.ContainsKey(entity.Id))
+        if (!Exists(entity.Id))
             throw new Exception($"Entity with Id {entity.Id} doesn't exist");
 
         _database.TryRemove(entity.Id, out _);
+    }
+
+    public bool Exists(string id)
+    {
+        return _database.ContainsKey(id);
     }
 
     public T GetById(string id)
@@ -40,7 +45,7 @@ public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
 
     public T Update(T entity)
     {
-        if (!_database.ContainsKey(entity.Id))
+        if (!Exists(entity.Id))
             throw new Exception($"Entity with Id {entity.Id} doesn't exist");
 
         entity.Updated = DateTime.UtcNow;

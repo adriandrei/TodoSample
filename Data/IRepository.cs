@@ -10,4 +10,5 @@ public interface IRepository<T> where T : BaseEntity
     T Update(T entity);
     void Delete(T entity);
     IEnumerable<T> List(Func<KeyValuePair<string, T>, bool>? filter = null);
+    bool Exists(string id);
 }

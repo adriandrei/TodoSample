@@ -1,26 +1,18 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using TodoSample.Data;
+using TodoSample.Helpers;
 using TodoSample.Models;
 
 namespace TodoSample.Requests;
 
-public class GetTodoRequest : IRequest<Todo>
+public class GetTodoRequest : ExistingTodoRequest
 {
-    public GetTodoRequest(string id)
-    {
-        Id = id;
-    }
-
-    public string Id { get; set; }
+    public GetTodoRequest(string id) : base(id) { }
 }
 
-public sealed class GetTodoValidator : AbstractValidator<GetTodoRequest>
+public sealed class GetTodoValidator : ExistingTodoValidator<GetTodoRequest>
 {
-    public GetTodoValidator()
-    {
-        RuleFor(t => t.Id).NotEmpty().NotNull();
-    }
+    public GetTodoValidator(IRepository<Todo> repo) : base(repo) { }
 }
 
 public class GetTodoHandler : IRequestHandler<GetTodoRequest, Todo>
