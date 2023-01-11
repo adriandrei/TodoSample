@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿#region
+
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+#endregion
 
 namespace TodoSample;
 
@@ -11,7 +15,8 @@ public class HealthCheck : IHealthCheck
         this.logger = logger;
     }
 
-    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
+        CancellationToken cancellationToken = default)
     {
         return Task.FromResult(HealthCheckResult.Healthy());
     }

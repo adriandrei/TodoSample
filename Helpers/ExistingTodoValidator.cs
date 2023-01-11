@@ -1,7 +1,11 @@
-﻿using FluentValidation;
+﻿#region
+
+using FluentValidation;
 using MediatR;
 using TodoSample.Data;
 using TodoSample.Models;
+
+#endregion
 
 namespace TodoSample.Helpers;
 
@@ -9,7 +13,7 @@ public abstract class ExistingTodoRequest : IRequest<Todo>
 {
     public ExistingTodoRequest(string id)
     {
-        this.Id = id;
+        Id = id;
     }
 
     public string Id { get; set; }
@@ -20,7 +24,7 @@ public class ExistingTodoValidator<T> : AbstractValidator<T> where T : ExistingT
     protected readonly IRepository<Todo> repo;
 
     public ExistingTodoValidator(IRepository<Todo> repo)
-	{
+    {
         this.repo = repo;
 
         RuleFor(t => t.Id).NotEmpty().NotNull();

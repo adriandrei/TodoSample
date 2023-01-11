@@ -1,6 +1,10 @@
-﻿using MediatR;
+﻿#region
+
+using MediatR;
 using TodoSample.Data;
 using TodoSample.Models;
+
+#endregion
 
 namespace TodoSample.Requests;
 
@@ -25,9 +29,9 @@ public class ListTodoHandler : IRequestHandler<ListTodoRequest, IEnumerable<Todo
 
     public Task<IEnumerable<Todo>> Handle(ListTodoRequest request, CancellationToken cancellationToken)
     {
-        var result = request.Key == null ?
-            this.repository.List() :
-            this.repository.List(t => t.Value!.Title!.Contains(request.Key!));
+        var result = request.Key == null
+            ? repository.List()
+            : repository.List(t => t.Value!.Title!.Contains(request.Key!));
 
         return Task.FromResult(result);
     }

@@ -1,4 +1,8 @@
-﻿using TodoSample.Models;
+﻿#region
+
+using TodoSample.Models;
+
+#endregion
 
 namespace TodoSample.ViewModels;
 
@@ -6,7 +10,7 @@ public record UpdateTodoDboRequest
 {
     public UpdateTodoDboRequest(string title)
     {
-        this.Title = title;
+        Title = title;
     }
 
     public string Title { get; set; }
@@ -18,11 +22,11 @@ public record TodoListDto
 {
     public TodoListDto(Todo todo)
     {
-        this.Id = todo.Id;
-        this.Title = todo.Title;
-        this.DueBy = todo.DueBy;
-        this.Updated = todo.Updated;
-        this.Completed = todo.Completed;
+        Id = todo.Id;
+        Title = todo.Title;
+        DueBy = todo.DueBy;
+        Updated = todo.Updated;
+        Completed = todo.Completed;
     }
 
     public string Id { get; set; }

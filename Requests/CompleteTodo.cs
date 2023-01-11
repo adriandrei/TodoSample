@@ -1,14 +1,20 @@
-﻿using FluentValidation;
+﻿#region
+
+using FluentValidation;
 using MediatR;
 using TodoSample.Data;
 using TodoSample.Helpers;
 using TodoSample.Models;
 
+#endregion
+
 namespace TodoSample.Requests;
 
 public class CompleteTodoRequest : ExistingTodoRequest
 {
-    public CompleteTodoRequest(string id) : base(id) { }
+    public CompleteTodoRequest(string id) : base(id)
+    {
+    }
 }
 
 public sealed class CompleteTodoRequestValidator : ExistingTodoValidator<CompleteTodoRequest>
@@ -20,7 +26,7 @@ public sealed class CompleteTodoRequestValidator : ExistingTodoValidator<Complet
 
     private bool RequestIsNotCompleted(string id)
     {
-        var todo = this.repo.GetById(id);
+        var todo = repo.GetById(id);
 
         return !todo.Completed;
     }
@@ -37,9 +43,9 @@ public class CompleteTodoRequestHandler : IRequestHandler<CompleteTodoRequest, T
 
     public Task<Todo> Handle(CompleteTodoRequest request, CancellationToken cancellationToken)
     {
-        var todo = this.repo.GetById(request.Id);
+        var todo = repo.GetById(request.Id);
         todo.Complete(true);
-        this.repo.Update(todo);
+        repo.Update(todo);
 
         return Task.FromResult(todo);
     }

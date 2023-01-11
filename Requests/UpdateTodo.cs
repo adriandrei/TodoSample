@@ -1,8 +1,12 @@
-﻿using FluentValidation;
+﻿#region
+
+using FluentValidation;
 using MediatR;
 using TodoSample.Data;
 using TodoSample.Helpers;
 using TodoSample.Models;
+
+#endregion
 
 namespace TodoSample.Requests;
 
@@ -10,7 +14,7 @@ public class UpdateTodoRequest : ExistingTodoRequest
 {
     public UpdateTodoRequest(string id, string title) : base(id)
     {
-        this.Title = title;
+        Title = title;
     }
 
     public string Title { get; set; }
@@ -37,12 +41,12 @@ public class UpdateValidatorHandler : IRequestHandler<UpdateTodoRequest, Todo>
 
     public Task<Todo> Handle(UpdateTodoRequest request, CancellationToken cancellationToken)
     {
-        var entity = this.repository.GetById(request.Id);
+        var entity = repository.GetById(request.Id);
 
         entity.UpdateDueBy(request.DueBy);
         entity.UpdateTitle(request.Title);
         entity.UpdateDescription(request.Description);
-        this.repository.Update(entity);
+        repository.Update(entity);
 
         return Task.FromResult(entity);
     }

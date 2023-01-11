@@ -1,9 +1,13 @@
-﻿using MediatR;
+﻿#region
+
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TodoSample.Helpers;
 using TodoSample.Models;
 using TodoSample.Requests;
 using TodoSample.ViewModels;
+
+#endregion
 
 namespace TodoSample.Controllers
 {
@@ -37,7 +41,6 @@ namespace TodoSample.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ExceptionResponse), 400)]
         [ProducesResponseType(typeof(ExceptionResponse), 500)]
-
         public async Task<IActionResult> GetById(string id)
         {
             var result = await mediator.Send(new GetTodoRequest(id));
@@ -63,7 +66,6 @@ namespace TodoSample.Controllers
         [ProducesResponseType(202)]
         [ProducesResponseType(typeof(ExceptionResponse), 400)]
         [ProducesResponseType(typeof(ExceptionResponse), 500)]
-
         public async Task<IActionResult> Delete(string id)
         {
             await mediator.Send(new DeleteTodoRequest(id));
@@ -76,9 +78,10 @@ namespace TodoSample.Controllers
         [ProducesResponseType(202)]
         [ProducesResponseType(typeof(ExceptionResponse), 400)]
         [ProducesResponseType(typeof(ExceptionResponse), 500)]
-        public async Task<IActionResult> Update(string id, [FromBody]UpdateTodoDboRequest request)
+        public async Task<IActionResult> Update(string id, [FromBody] UpdateTodoDboRequest request)
         {
-            await mediator.Send(new UpdateTodoRequest(id, request.Title) { Description = request.Description, DueBy = request.DueBy });
+            await mediator.Send(new UpdateTodoRequest(id, request.Title)
+                {Description = request.Description, DueBy = request.DueBy});
 
             return Accepted();
         }
@@ -90,7 +93,7 @@ namespace TodoSample.Controllers
         [ProducesResponseType(typeof(ExceptionResponse), 500)]
         public async Task<IActionResult> Complete(string id)
         {
-            await this.mediator.Send(new CompleteTodoRequest(id));
+            await mediator.Send(new CompleteTodoRequest(id));
             return Accepted();
         }
     }

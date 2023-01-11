@@ -1,18 +1,26 @@
-﻿using MediatR;
+﻿#region
+
+using MediatR;
 using TodoSample.Data;
 using TodoSample.Helpers;
 using TodoSample.Models;
+
+#endregion
 
 namespace TodoSample.Requests;
 
 public class DeleteTodoRequest : ExistingTodoRequest
 {
-    public DeleteTodoRequest(string id) : base(id) { }
+    public DeleteTodoRequest(string id) : base(id)
+    {
+    }
 }
 
 public sealed class DeleteTodoValidator : ExistingTodoValidator<DeleteTodoRequest>
 {
-    public DeleteTodoValidator(IRepository<Todo> repo) : base(repo) { }
+    public DeleteTodoValidator(IRepository<Todo> repo) : base(repo)
+    {
+    }
 }
 
 public class DeleteTodoHandler : IRequestHandler<DeleteTodoRequest, Todo>
@@ -20,7 +28,7 @@ public class DeleteTodoHandler : IRequestHandler<DeleteTodoRequest, Todo>
     private readonly IRepository<Todo> repository;
 
     public DeleteTodoHandler(IRepository<Todo> repository)
-	{
+    {
         this.repository = repository;
     }
 

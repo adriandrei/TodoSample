@@ -1,11 +1,15 @@
-﻿using System.Collections.Concurrent;
+﻿#region
+
+using System.Collections.Concurrent;
 using TodoSample.Models;
+
+#endregion
 
 namespace TodoSample.Data;
 
 public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
 {
-    private ConcurrentDictionary<string, T> _database = new ConcurrentDictionary<string, T>();
+    private readonly ConcurrentDictionary<string, T> _database = new();
 
     public void Create(T entity)
     {
@@ -30,15 +34,13 @@ public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
 
     public T GetById(string id)
     {
-        _database.TryGetValue(id, out T value);
-        return value ;
+        _database.TryGetValue(id, out var value);
+        return value;
     }
 
     public IEnumerable<T> List(Func<KeyValuePair<string, T>, bool>? filter = null)
     {
-        var result = filter != null ?
-            _database.Where(filter).Select(t => t.Value) :
-            _database.Select(t => t.Value);
+        var result = filter != null ? _database.Where(filter).Select(t => t.Value) : _database.Select(t => t.Value);
 
         return result.OrderBy(t => t.Updated);
     }

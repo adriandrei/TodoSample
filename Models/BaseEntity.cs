@@ -6,8 +6,8 @@ public abstract class BaseEntity
     {
         id ??= Guid.NewGuid().ToString();
 
-        this.Id = id;
-        this.Created = this.Updated = DateTime.UtcNow;
+        Id = id;
+        Created = Updated = DateTime.UtcNow;
     }
 
     public virtual string Id { get; set; }

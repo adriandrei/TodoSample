@@ -1,14 +1,18 @@
-using FluentValidation.AspNetCore;
+#region
+
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.OpenApi.Models;
+using TodoSample;
 using TodoSample.Data;
 using TodoSample.Helpers;
-using Microsoft.AspNetCore.ResponseCompression;
-using TodoSample;
-using Microsoft.AspNetCore.Rewrite;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.CustomOperationIds(d => (d.ActionDescriptor as ControllerActionDescriptor)?.ActionName);
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo {Title = "Api", Version = "v1"});
 });
 
 builder.Services.AddSingleton(typeof(IRepository<>), typeof(InMemoryRepository<>));
@@ -39,10 +43,7 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseResponseCompression();
-}
+if (!app.Environment.IsDevelopment()) app.UseResponseCompression();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();

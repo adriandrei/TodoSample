@@ -11,7 +11,7 @@ public class Todo : BaseEntity
     public string Title { get; set; }
     public string? Description { get; set; }
     public DateTime? DueBy { get; set; }
-    public bool Completed { get; set; } = false;
+    public bool Completed { get; set; }
 
 
     public void UpdateDueBy(DateTime? dueBy)
@@ -21,16 +21,16 @@ public class Todo : BaseEntity
 
     public void UpdateTitle(string title)
     {
-        this.Title = title;
+        Title = title;
     }
-    
+
     public void UpdateDescription(string? description)
     {
-        this.Description = description;
+        Description = description;
     }
 
     public void Complete(bool completed)
     {
-        this.Completed = completed;
+        Completed = completed;
     }
 }

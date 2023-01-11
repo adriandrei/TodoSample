@@ -1,16 +1,20 @@
-﻿using FluentValidation;
+﻿#region
+
+using FluentValidation;
 using MediatR;
 using TodoSample.Data;
 using TodoSample.Models;
 
+#endregion
+
 namespace TodoSample.Requests;
 
-public record CreateTodoRequest :  IRequest
+public record CreateTodoRequest : IRequest
 {
     public CreateTodoRequest(string title, string? description)
     {
-        this.Title = title;
-        this.Description = description;
+        Title = title;
+        Description = description;
     }
 
     public string Title { get; set; }
@@ -36,10 +40,8 @@ public class CreateTodoHandler : IRequestHandler<CreateTodoRequest>
 
     public Task<Unit> Handle(CreateTodoRequest request, CancellationToken cancellationToken)
     {
-        this.repository.Create(new Todo(request.Title, request.Description));
+        repository.Create(new Todo(request.Title, request.Description));
 
         return Unit.Task;
     }
 }
-
-
