@@ -16,6 +16,7 @@ using TodoSample.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -43,7 +44,10 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment()) app.UseResponseCompression();
+if (!app.Environment.IsDevelopment()) 
+    app.UseResponseCompression();
+
+app.UseCors(t => t.AllowAnyOrigin());
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
