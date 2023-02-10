@@ -47,7 +47,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment()) 
     app.UseResponseCompression();
 
-app.UseCors(t => t.AllowAnyOrigin());
+app.UseCors(t => t.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
